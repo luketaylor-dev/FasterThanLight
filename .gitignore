@@ -80,6 +80,7 @@ Thumbs.db
 # IDE files
 .vscode/
 .cursorrules
+.cursorignore
 .idea/
 *.swp
 *.swo

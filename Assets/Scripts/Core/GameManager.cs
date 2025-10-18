@@ -1,12 +1,10 @@
 using UnityEngine;
+using VContainer;
 using FTL.Core.Events;
+using FTL.Core.Services;
 
 namespace FTL.Core
 {
-    /// <summary>
-    /// Main game manager that orchestrates the entire game flow.
-    /// This is the context object that will use our state machine.
-    /// </summary>
     public class GameManager : MonoBehaviour
     {
         [Header("Game Settings")]
@@ -14,8 +12,14 @@ namespace FTL.Core
 
         private StateMachine.StateMachine<GameManager> stateMachine;
 
-        public StateMachine.StateMachine<GameManager> StateMachine => stateMachine;
+        [Inject] public IShipService ShipService { get; private set; }
+        [Inject] public IWeaponService WeaponService { get; private set; }
+        [Inject] public IRoomService RoomService { get; private set; }
+        [Inject] public IShieldService ShieldService { get; private set; }
+        [Inject] public IProjectileService ProjectileService { get; private set; }
+        [Inject] public ICombatService CombatService { get; private set; }
 
+        public StateMachine.StateMachine<GameManager> StateMachine => stateMachine;
         public bool DebugMode => debugMode;
 
         private void Awake()
