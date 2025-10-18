@@ -1,6 +1,6 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace FTL.Core
 {
@@ -11,8 +11,8 @@ namespace FTL.Core
     public class StateMachineTestUI : MonoBehaviour
     {
         [Header("UI References")]
-        [SerializeField] private TMP_Text currentStateText;
-        [SerializeField] private TMP_Text instructionsText;
+        [SerializeField] private TextMeshProUGUI currentStateText;
+        [SerializeField] private TextMeshProUGUI instructionsText;
         [SerializeField] private Button pauseButton;
         [SerializeField] private Button restartButton;
 
@@ -70,11 +70,11 @@ namespace FTL.Core
 
             return currentState.StateName switch
             {
-                "Setup" => "Loading game systems... Please wait.",
-                "Combat" => "Press SPACE to pause\nCombat is active!",
-                "Paused" => "Press SPACE to resume\nPlan your next move!",
-                "Victory" => "Press R to restart\nPress ESC to quit\nYou won!",
-                "Defeat" => "Press R to restart\nPress ESC to quit\nYou lost!",
+                "Setup" => "Loading game systems... Please wait.\nEvent system initializing...",
+                "Combat" => "Press SPACE to pause\nCombat is active!\nEvents firing automatically...",
+                "Paused" => "Press SPACE to resume\nPlan your next move!\nEvents paused...",
+                "Victory" => "Press R to restart\nPress ESC to quit\nYou won!\nCombat events ended",
+                "Defeat" => "Press R to restart\nPress ESC to quit\nYou lost!\nCombat events ended",
                 _ => "Unknown state"
             };
         }

@@ -79,6 +79,7 @@ Thumbs.db
 
 # IDE files
 .vscode/
+.cursorrules
 .idea/
 *.swp
 *.swo
