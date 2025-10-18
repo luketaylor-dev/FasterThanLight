@@ -1,17 +1,21 @@
 using UnityEngine;
+using VContainer;
 using FTL.Core.Events;
+using FTL.Core.Services;
 
 namespace FTL.Core.StateMachine.GameStates
 {
-    /// <summary>
-    /// Combat state - handles active gameplay
-    /// This is where ships fight, weapons fire, and the main game loop runs
-    /// </summary>
     public class CombatState : BaseState<Core.GameManager>
     {
         public override string StateName => "Combat";
 
+        [Inject] public IShipService ShipService { get; private set; }
+        [Inject] public IWeaponService WeaponService { get; private set; }
+        [Inject] public ICombatService CombatService { get; private set; }
+
         private float combatTimer = 0f;
+        private ShipComponent playerShip;
+        private ShipComponent enemyShip;
 
         public CombatState(Core.GameManager context) : base(context)
         {
@@ -30,13 +34,18 @@ namespace FTL.Core.StateMachine.GameStates
 
             combatTimer = 0f;
 
-            CombatEvents.OnCombatStarted();
+            // Create ships using injected services
+            playerShip = ShipService.CreateShip("Player Ship", Vector3.left);
+            enemyShip = ShipService.CreateShip("Enemy Ship", Vector3.right);
 
-            // TODO: Initialize combat systems here
-            // - Spawn ships
-            // - Initialize weapons
-            // - Start AI
-            // - Enable player input
+            // Create weapons
+            var playerWeapon = WeaponService.CreateWeapon(WeaponType.LaserCannon, playerShip, Vector3.up);
+            var enemyWeapon = WeaponService.CreateWeapon(WeaponType.LaserCannon, enemyShip, Vector3.up);
+
+            // Start combat
+            CombatService.StartCombat(playerShip, enemyShip);
+
+            CombatEvents.OnCombatStarted();
         }
 
         public override void OnUpdate()
@@ -55,25 +64,30 @@ namespace FTL.Core.StateMachine.GameStates
                 return;
             }
 
-            // TODO: Update combat systems here
-            // - Update weapons
-            // - Update AI
-            // - Check win/lose conditions
-            // - Update UI
+            // Process combat using injected services
+            CombatService.ProcessCombatTurn();
+
+            // Check win/lose conditions
+            if (CombatService.CheckVictoryCondition())
+            {
+                if (context.DebugMode)
+                {
+                    Debug.Log("Victory condition met!");
+                }
+                context.EndGameVictory();
+            }
+            else if (CombatService.CheckDefeatCondition())
+            {
+                if (context.DebugMode)
+                {
+                    Debug.Log("Defeat condition met!");
+                }
+                context.EndGameDefeat();
+            }
 
             if (context.DebugMode && combatTimer > 0f && combatTimer < 0.1f)
             {
                 Debug.Log("Combat systems active - weapons charging...");
-            }
-
-            // TODO: Check win/lose conditions
-            if (combatTimer >= 10f)
-            {
-                if (context.DebugMode)
-                {
-                    Debug.Log("Simulated victory condition met!");
-                }
-                context.EndGameVictory();
             }
         }
 
@@ -86,12 +100,13 @@ namespace FTL.Core.StateMachine.GameStates
                 Debug.Log($"Combat phase ended after {combatTimer:F1} seconds");
             }
 
-            CombatEvents.OnCombatEnded();
+            // Cleanup using injected services
+            CombatService.EndCombat();
 
-            // TODO: Cleanup combat systems
-            // - Stop weapons
-            // - Disable AI
-            // - Disable player input
+            if (playerShip != null) ShipService.DestroyShip(playerShip);
+            if (enemyShip != null) ShipService.DestroyShip(enemyShip);
+
+            CombatEvents.OnCombatEnded();
         }
     }
 }

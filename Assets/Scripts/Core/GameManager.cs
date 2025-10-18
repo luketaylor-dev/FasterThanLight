@@ -12,13 +12,6 @@ namespace FTL.Core
 
         private StateMachine.StateMachine<GameManager> stateMachine;
 
-        [Inject] public IShipService ShipService { get; private set; }
-        [Inject] public IWeaponService WeaponService { get; private set; }
-        [Inject] public IRoomService RoomService { get; private set; }
-        [Inject] public IShieldService ShieldService { get; private set; }
-        [Inject] public IProjectileService ProjectileService { get; private set; }
-        [Inject] public ICombatService CombatService { get; private set; }
-
         public StateMachine.StateMachine<GameManager> StateMachine => stateMachine;
         public bool DebugMode => debugMode;
 
