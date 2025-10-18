@@ -1,7 +1,7 @@
 using UnityEngine;
 using FTL.Core.Events;
 
-namespace FTL.Core.Services
+namespace FTL.Core.Components
 {
     public class WeaponComponent : MonoBehaviour
     {

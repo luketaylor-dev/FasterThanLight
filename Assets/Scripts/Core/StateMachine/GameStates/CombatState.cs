@@ -2,6 +2,7 @@ using UnityEngine;
 using VContainer;
 using FTL.Core.Events;
 using FTL.Core.Services;
+using FTL.Core.Components;
 
 namespace FTL.Core.StateMachine.GameStates
 {
@@ -110,7 +111,7 @@ namespace FTL.Core.StateMachine.GameStates
 
             // Cleanup using injected services
             CombatService.EndCombat();
-            
+
             if (enemyAI != null) AIService.StopAI(enemyAI);
             if (playerWeapon != null) WeaponService.DestroyWeapon(playerWeapon);
             if (enemyWeapon != null) WeaponService.DestroyWeapon(enemyWeapon);

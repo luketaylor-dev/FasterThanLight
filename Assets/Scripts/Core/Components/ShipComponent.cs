@@ -1,18 +1,15 @@
 using UnityEngine;
-using FTL.Core.Events;
 
-namespace FTL.Core.Services
+namespace FTL.Core.Components
 {
-    public class RoomComponent : MonoBehaviour
+    public class ShipComponent : MonoBehaviour
     {
-        public RoomType RoomType { get; private set; }
         public float CurrentHealth { get; private set; }
         public float MaxHealth { get; private set; }
         public bool IsAlive { get; private set; } = true;
 
-        public void Initialize(RoomType type, float health)
+        public void Initialize(float health)
         {
-            RoomType = type;
             MaxHealth = health;
             CurrentHealth = health;
             IsAlive = true;
@@ -30,7 +27,7 @@ namespace FTL.Core.Services
             }
         }
 
-        public void Repair(float amount)
+        public void Heal(float amount)
         {
             if (!IsAlive) return;
 

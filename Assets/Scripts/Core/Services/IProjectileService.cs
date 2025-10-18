@@ -1,4 +1,5 @@
 using UnityEngine;
+using FTL.Core.Components;
 
 namespace FTL.Core.Services
 {

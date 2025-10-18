@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace FTL.Core.Services
+namespace FTL.Core.Components
 {
     public class ProjectileComponent : MonoBehaviour
     {

@@ -1,4 +1,5 @@
 using UnityEngine;
+using FTL.Core.Components;
 using FTL.Core.Events;
 
 namespace FTL.Core.Services

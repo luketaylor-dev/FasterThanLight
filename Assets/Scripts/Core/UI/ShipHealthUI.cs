@@ -1,6 +1,7 @@
 using UnityEngine;
 using VContainer;
 using FTL.Core.Services;
+using FTL.Core.Components;
 
 namespace FTL.Core.UI
 {
