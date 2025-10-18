@@ -19,6 +19,20 @@ namespace FTL.Core.Services
             return shipComponent;
         }
 
+        public (ShipComponent ship, AI.EnemyAI ai) CreateEnemyShip(string shipName, Vector3 position)
+        {
+            var ship = new GameObject(shipName);
+            ship.transform.position = position;
+
+            var shipComponent = ship.AddComponent<ShipComponent>();
+            shipComponent.Initialize(DEFAULT_SHIP_HEALTH);
+
+            var aiComponent = ship.AddComponent<AI.EnemyAI>();
+
+            CombatEvents.OnShipSpawned(ship, shipName, position);
+            return (shipComponent, aiComponent);
+        }
+
         public void DestroyShip(ShipComponent ship)
         {
             if (ship == null) return;

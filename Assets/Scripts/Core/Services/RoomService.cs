@@ -49,7 +49,8 @@ namespace FTL.Core.Services
 
         public ShipComponent GetRoomShip(RoomComponent room)
         {
-            return room?.transform.parent?.GetComponent<ShipComponent>();
+            if (room?.transform.parent == null) return null;
+            return room.transform.parent.GetComponent<ShipComponent>();
         }
 
         public Vector3 GetRoomPosition(RoomComponent room)

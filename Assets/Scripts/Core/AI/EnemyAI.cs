@@ -9,19 +9,13 @@ namespace FTL.Core.AI
         [Inject] public IWeaponService WeaponService { get; private set; }
         [Inject] public ICombatService CombatService { get; private set; }
 
-        private ShipComponent enemyShip;
         private WeaponComponent enemyWeapon;
         private float lastFireTime;
         private float fireInterval = 3f;
 
-        private void Start()
+        public void SetWeapon(WeaponComponent weapon)
         {
-            enemyShip = CombatService.GetEnemyShip();
-            if (enemyShip != null)
-            {
-                // Find enemy weapon (in real implementation, you'd track this)
-                enemyWeapon = enemyShip.GetComponentInChildren<WeaponComponent>();
-            }
+            enemyWeapon = weapon;
         }
 
         private void Update()

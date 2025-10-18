@@ -14,6 +14,7 @@ namespace FTL.Core
             builder.Register<IShieldService, ShieldService>(Lifetime.Singleton);
             builder.Register<IProjectileService, ProjectileService>(Lifetime.Singleton);
             builder.Register<ICombatService, CombatService>(Lifetime.Singleton);
+            builder.Register<IAIService, AIService>(Lifetime.Singleton);
         }
     }
 }

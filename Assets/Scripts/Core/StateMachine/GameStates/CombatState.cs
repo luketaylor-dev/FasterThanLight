@@ -12,10 +12,14 @@ namespace FTL.Core.StateMachine.GameStates
         [Inject] public IShipService ShipService { get; private set; }
         [Inject] public IWeaponService WeaponService { get; private set; }
         [Inject] public ICombatService CombatService { get; private set; }
+        [Inject] public IAIService AIService { get; private set; }
 
         private float combatTimer = 0f;
         private ShipComponent playerShip;
         private ShipComponent enemyShip;
+        private WeaponComponent playerWeapon;
+        private WeaponComponent enemyWeapon;
+        private AI.EnemyAI enemyAI;
 
         public CombatState(Core.GameManager context) : base(context)
         {
@@ -36,11 +40,15 @@ namespace FTL.Core.StateMachine.GameStates
 
             // Create ships using injected services
             playerShip = ShipService.CreateShip("Player Ship", Vector3.left);
-            enemyShip = ShipService.CreateShip("Enemy Ship", Vector3.right);
+            (enemyShip, enemyAI) = ShipService.CreateEnemyShip("Enemy Ship", Vector3.right);
 
             // Create weapons
-            var playerWeapon = WeaponService.CreateWeapon(WeaponType.LaserCannon, playerShip, Vector3.up);
-            var enemyWeapon = WeaponService.CreateWeapon(WeaponType.LaserCannon, enemyShip, Vector3.up);
+            playerWeapon = WeaponService.CreateWeapon(WeaponType.LaserCannon, playerShip, Vector3.up);
+            enemyWeapon = WeaponService.CreateWeapon(WeaponType.LaserCannon, enemyShip, Vector3.up);
+
+            // Setup AI
+            AIService.AssignWeaponToAI(enemyAI, enemyWeapon);
+            AIService.StartAI(enemyAI);
 
             // Start combat
             CombatService.StartCombat(playerShip, enemyShip);
@@ -102,7 +110,10 @@ namespace FTL.Core.StateMachine.GameStates
 
             // Cleanup using injected services
             CombatService.EndCombat();
-
+            
+            if (enemyAI != null) AIService.StopAI(enemyAI);
+            if (playerWeapon != null) WeaponService.DestroyWeapon(playerWeapon);
+            if (enemyWeapon != null) WeaponService.DestroyWeapon(enemyWeapon);
             if (playerShip != null) ShipService.DestroyShip(playerShip);
             if (enemyShip != null) ShipService.DestroyShip(enemyShip);
 
